@@ -35,7 +35,7 @@ app.use(session({
     secret: 'secret',
     resave: false,
     saveUninitialized: false,
-    store: new MongoStore(options)
+    store: new MongoStore({url: keys.mongoURI})
 }))
 app.use(flash())
 require('./middlewares/passport')(passport)
