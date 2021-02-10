@@ -85,7 +85,7 @@ exports.update = async function (req, res) {
             {_id: req.body._id}, 
             req.body,
             {new: true})
-            res.redirect('/admin')
+            res.redirect('/home')
     } catch(e) {
         errorHandler(res,e)
     }
