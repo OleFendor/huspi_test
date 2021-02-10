@@ -60,7 +60,6 @@ exports.remove = async function(req, res) {
     try {
         await User.remove({_id: req.params.id});
         res.redirect('/admin')
-        req.flash('error_msg', `${user.name} edited!`)
 
     } catch(e) {
         errorHandler(res,e)
