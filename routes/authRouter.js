@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require('body-parser')
 const authController = require("../controllers/authController");
 const authRouter = express.Router();
-const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 const {forwardAuthenticated} = require('../middlewares/auth')

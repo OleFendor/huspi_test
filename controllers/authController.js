@@ -5,6 +5,8 @@ const keys = require('../config/keys');
 const errorHandler = require('../utils/errorHandler');
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
+const salt = bcrypt.genSaltSync(10)
+
 
 exports.main = (req,res) => {
         res.redirect('/login')
@@ -28,7 +30,6 @@ exports.register = async function(req,res) {
             })
         }
 
-        const salt = bcrypt.genSaltSync(10)
         const password = req.body.password;
         const user = new User({
             name: req.body.name,
@@ -40,7 +41,6 @@ exports.register = async function(req,res) {
             await user.save();
             req.flash('success_msg', 'You are registered and can now log in')
             res.redirect('/login')
-           // res.status(201).json(user);
         } catch(e) {
             errorHandler(res,e);
 
@@ -52,49 +52,30 @@ exports.getLogin = (req, res) => {
         title: 'Main'
     })
 }
-exports.login = async function(req, res) {
-    
-    const candidate = await User.findOne({email: req.body.email});
-    if(candidate) {
-        if(candidate.living === 'Active'){
-        //check password
-        const passportResult = bcrypt.compareSync(req.body.password, candidate.password);
-        if(passportResult) {
-            //generate token
-            const token = jwt.sign({
-                email: candidate.email,
-                userId: candidate._id
-            }, keys.jwt, {expiresIn: 60 * 60})
-         //  res.setHeader({'Authorization': 'Bearer ' + token})
 
-
-           if(candidate.role === 'User') {
-               req.flash('success_msg', 'Welcome, '+ candidate.name)
-            res.redirect('/admin/'+ candidate._id)
-           } else {
-            req.flash('success_msg', 'Welcome, '+ candidate.name)
-                res.redirect('/admin')
-           }
-           // res.status(200).json({
-           //     token: `Bearer ${token}`,
-           //     userId: candidate._id
-           // })
-        } else {
-            //password incorrect
-            //req.flash('error_msg', 'Password incorrect')
-            errors.push({msg: 'Password incorect'})
-            res.redirect('/login')
+exports.changepass = async (req, res) => {
+    try {
+    const user = await User.findOne({_id: req.params.id})
+    const newpass = bcrypt.hashSync(req.body.newpass, salt)
+    const isMatch = bcrypt.compare(req.body.oldpass, user.password)
+        if(isMatch) {
+            await User.findByIdAndUpdate({_id: user._id},
+                {password: newpass},
+                {new:true})
+                console.log(req.body.newpass + bcrypt.hashSync(req.body.newpass, salt))
+                req.flash('success_msg', 'Password changed!')
+            res.redirect('/home')
         }
-     } else {
-        req.flash('error_msg', 'User Inactive')
-        res.redirect('/login')
+        else {
+            console.log("BBB")
+            req.flash('error_msg', 'Wrong password!')
+            res.redirect('/profile/changepass/'+ user._id)
 
-     }
-    } else {
-        req.flash('error_msg', 'No such user')
-        res.redirect('/login')
+
+        }
+    } catch(e) {
+        errorHandler(res, e)
     }
-
 }
 
 exports.afterLogin = (req, res) => {

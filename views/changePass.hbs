@@ -1,0 +1,21 @@
+<form action="/profile/changepass/{{_id}}" method="POST" autocomplete="off" >
+        <input type="hidden" name="_id" value="{{_id}}">
+
+        <div class="form-group">
+            <label>Your password</label>
+            <input type="password" class="form-control" name="oldpass" >
+        </div>
+        <div class="form-group">
+            <label>New password</label>
+            <input type="password" class="form-control" name="newpass">
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-info">Submit</button>
+            <a href="/home" class="btn btn-danger right red">
+         Cancel
+    </a>
+        </div>
+        
+
+</form>

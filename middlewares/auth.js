@@ -11,5 +11,11 @@ module.exports = {
         return next();
       }
       res.redirect('/')      
+    },
+    ensureAdmin: function(req, res, next) {
+      if(req.isAuthenticated() && req.user.role === "Admin") {
+        return next();
+      }
+      res.redirect('/home')
     }
   };

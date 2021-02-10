@@ -1,5 +1,4 @@
 const User = require("../models/user.js");
-const bcrypt = require("bcryptjs");
 const errorHandler = require("../utils/errorHandler");
 
 exports.addUser = function (request, response){
@@ -9,6 +8,7 @@ exports.addUser = function (request, response){
 
 exports.getUsers = async function(req, res){
     try {
+        if(req.user.role === 'Admin') {
    await User.find({}, function(err, allUsers){
         if(err) {
             console.log(err)
@@ -19,30 +19,16 @@ exports.getUsers = async function(req, res){
         })
 
     }).lean()
+    } else {
+        res.redirect('/dashboard/'+req.user._id)
+    }
     } catch(e) {
         errorHandler(e)
     }
   
 }
 
-exports.postUser = async function(request, response){
-    try {
-    const userName = request.body.name;
-    const userSurname = request.body.surname;
-    const userEmail = request.body.email;
-    let userPassword = request.body.password;
-    if (userPassword) {
-        userPassword = bcrypt.hashSync(userPassword, 10);
-    }
-    const user = new User({name: userName, surname: userSurname, email: userEmail, password: userPassword, living: "Active", role: "User"});
-    await user.save(function(err){
-        if(err) return console.log(err);
-        response.redirect("/profile/:id");
-    })
-    } catch(e) {
-    errorHandler(e)
-    }
-}
+
 
 
 exports.getById = async function(req, res) {
@@ -74,6 +60,8 @@ exports.remove = async function(req, res) {
     try {
         await User.remove({_id: req.params.id});
         res.redirect('/admin')
+        req.flash('error_msg', `${user.name} edited!`)
+
     } catch(e) {
         errorHandler(res,e)
     }
@@ -85,7 +73,9 @@ exports.update = async function (req, res) {
             {_id: req.body._id}, 
             req.body,
             {new: true})
-            res.redirect('/admin')
+            req.flash('success_msg', `${user.name} edited!`)
+
+            res.redirect('/home')
     } catch(e) {
         errorHandler(res,e)
     }

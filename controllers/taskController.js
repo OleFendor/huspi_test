@@ -18,6 +18,8 @@ exports.create = async function(req, res) {
 exports.remove = async function(req,res) {
     try {
         const task = await Task.findByIdAndRemove({_id: req.params.id});
+        req.flash('error_msg', `${task.name} deleted!`)
+
         res.redirect('/dashboard/'+ task.user)
     } catch(e) {
         errorHandler(res,e);
@@ -33,6 +35,7 @@ exports.update = async function(req,res) {
         'date' : req.body.date,
         'status' : req.body.status},
         {new:true})
+        req.flash('success_msg', `${req.body.name} edited!`)
         res.redirect('/dashboard/'+ task.user)
     } catch(e) {
         errorHandler(res,e);

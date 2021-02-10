@@ -11,11 +11,11 @@
         </div>
         <div class="form-group">
             <label>Email</label>
-            <input type="email" class="form-control" name="email"  placeholder="Email" value="{{client.email}}">
+            <input type="email" class="form-control" name="email"  placeholder="Email" value="{{client.email}}" disabled>
         </div>
         <div class="form-group">
             <label>Alive</label>
-            <input name="living" list="living">
+            <input name="living" list="living" placeholder="{{client.living}}">
             <datalist id="living">
                 <option value="Active" selected>Active</option>
                 <option value="Inactive">Inactive</option>
@@ -23,7 +23,7 @@
         </div>
         <div class="form-group">
             <label>Role</label>
-            <input name="role" list="role">
+        <input name="role" list="role" placeholder="{{client.role}}" >
             <datalist id="role">
                 <option value="User">User</option>
                 <option value="Admin">Admin</option>

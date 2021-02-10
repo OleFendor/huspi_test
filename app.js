@@ -33,7 +33,8 @@ app.use(bodyParser.json());
 app.use(session({
     secret: 'secret',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    
 }))
 app.use(flash())
 require('./middlewares/passport')(passport)
@@ -86,18 +87,18 @@ app.use("/admin", userRouter)
 app.use("/login", authRouter)
 app.use("/register", authRouter)
 app.use("/dashboard", taskRouter)
-app.use("/test", (req,res) => {
-    res.render('editTask')
-    console.log("Start " + req.user._id + " TEST")
+app.use('/test', (req, res) => {
+    res.render('changePass')
 })
 
 app.use(function (req, res, next) {
     res.status(404).send("Not Found");
 });
 
+const port = process.env.PORT || 3000
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, function(err){
     if(err) return console.log(err);
-    app.listen(3000, function(){
+    app.listen(port, function(){
         console.log("server waiting for connection...");
     });
 });
