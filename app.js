@@ -95,9 +95,10 @@ app.use(function (req, res, next) {
     res.status(404).send("Not Found");
 });
 
+const port = process.env.PORT || 3000
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, function(err){
     if(err) return console.log(err);
-    app.listen(3000, function(){
+    app.listen(port, function(){
         console.log("server waiting for connection...");
     });
 });
