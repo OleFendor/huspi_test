@@ -11,6 +11,7 @@ const passport = require("passport")
 const mongoose = require("mongoose");
 const exphbs = require("express-handlebars");
 var expressValidator = require('express-validator')
+const MongoStore = require('connect-mongo')(session);
 const userRouter = require("./routes/userRouter");
 const authRouter = require("./routes/authRouter");
 const taskRouter = require("./routes/taskRouter");
@@ -33,7 +34,8 @@ app.use(bodyParser.json());
 app.use(session({
     secret: 'secret',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store: new MongoStore(options)
 }))
 app.use(flash())
 require('./middlewares/passport')(passport)
