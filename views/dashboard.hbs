@@ -1,0 +1,47 @@
+<h3>
+    <a href="/dashboard/{{id}}/createtask" class="btn btn-danger">
+        <i class="tiny material-icons">add</i> Create New
+    </a>
+    Dashboard
+</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Comleted</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each tasks}}
+            <tr>
+                <td>{{this.name}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.date}}</td>
+                <td>
+                    {{#if this.status}}
+                    <a href="/dashboard/{{req.params._id}}/task/{{this._id}}/changestatus">
+                        <i class="material-icons" aria-hidden="true">done</i>
+                    </a>
+                    {{else}}
+                    <a href="/dashboard/{{req.params._id}}/task/{{this._id}}/changestatus">
+                        <i>In progress</i>
+                    </a>
+                    {{/if}}
+                    </td>
+                <td>
+                    <a href="/dashboard/task/{{this._id}}">
+                        <i class="material-icons" aria-hidden="true">edit</i>
+                    </a>
+                    <a href="/dashboard/task/delete/{{this._id}}">
+                        <i class="material-icons" aria-hidden="true">
+                         delete
+                        </i>
+                    </a>
+                </td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+

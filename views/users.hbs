@@ -1,0 +1,31 @@
+
+
+     <table class="table table-striped">
+    <thead>
+         <tr><th>Name</th><th>Surname</th><th>Email</th><th>Living</th><th>Role</th></tr>
+    </thead>
+    <tbody>
+        {{#each users}}
+            <tr>
+                <td>{{this.name}}</td>
+                <td>{{this.surname}}</td>
+                <td>{{this.email}}</td>
+                <td>{{this.living}}</td>
+                <td>{{this.role}}</td>
+                <td>
+                    <a href="/admin/{{this._id}}/tasks">
+                        <i class="material-icons" aria-hidden="true">dehaze</i>
+                    </a>
+                    <a href="/admin/user/{{this._id}}">
+                        <i class="material-icons" aria-hidden="true">edit</i>
+                    </a>
+                    <a href="/admin/delete/{{this._id}}">
+                        <i class="material-icons" aria-hidden="true">
+                         delete
+                        </i>
+                    </a>
+                </td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>

@@ -1,0 +1,20 @@
+<nav class="grey darken-4">
+    <div class="nav-wrapper">
+      {{#if user}}
+      <a href="/home" class="brand-logo">Task-list</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="/profile/{{user._id}}">Profile</a></li>
+          <li><a href="/dashboard/{{user._id}}">Dashboard</a></li>
+
+          <li><a href="/logout">Log out</a></li>
+     </ul>
+
+      {{else}}
+      <a href="/home" class="brand-logo">Task-list</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Register</a></li>
+      </ul>
+        {{/if}}
+    </div>
+  </nav>
